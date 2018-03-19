@@ -22,5 +22,17 @@ namespace calculate_the_size_of_folder
             "{0:N2} MB", ((double)sizeOfDir) / (1024 * 1024));
             Console.ReadLine();
         }
+
+        static long DirectorySize(DirectoryInfo dInfo, bool includeSubDir)
+        {
+            long totalSize = dInfo.EnumerateFiles()
+                         .Sum(file => file.Length);
+            if (includeSubDir)
+            {
+                totalSize += dInfo.EnumerateDirectories()
+                         .Sum(dir => DirectorySize(dir, true));
+            }
+            return totalSize;
+        }
     }
 }
